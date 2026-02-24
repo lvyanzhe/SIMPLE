@@ -14,7 +14,6 @@ We recommend that users install the following packages to run SIMPLE.
 
 - anndata==0.9.2
 - annoy==1.17.3
-- gseapy==1.1.10
 - hnswlib==0.8.0
 - matplotlib==3.7.5
 - numba==0.55.2
