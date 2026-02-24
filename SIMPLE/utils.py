@@ -58,7 +58,7 @@ def Cal_Spatial_Net(adata, k_cutoff=None, max_neighbor_num=50):
     coor = pd.DataFrame(adata.obsm['spatial'])
     nbrs = sklearn.neighbors.NearestNeighbors(
         n_neighbors=max_neighbor_num + 1, algorithm='ball_tree').fit(coor)
-    distances, indices = nbrs.kneighbors(coor)
+    indices = nbrs.kneighbors(coor)
     indices = indices[:, 1:k_cutoff + 1]
 
     n_cells, n_neighbors = indices.shape
