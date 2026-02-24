@@ -56,43 +56,15 @@ def Cal_Spatial_Net(adata, k_cutoff=None, max_neighbor_num=50):
 
     print('------------Calculating spatial neighborhood graph------------')
     coor = pd.DataFrame(adata.obsm['spatial'])
-    # coor.index = adata.obs.index
-    # coor.columns = ['imagerow', 'imagecol']
-
     nbrs = sklearn.neighbors.NearestNeighbors(
         n_neighbors=max_neighbor_num + 1, algorithm='ball_tree').fit(coor)
     distances, indices = nbrs.kneighbors(coor)
-    
     indices = indices[:, 1:k_cutoff + 1]
-    # distances = distances[:, 1:k_cutoff + 1]
 
     n_cells, n_neighbors = indices.shape
     cell1 = np.repeat(np.arange(n_cells), n_neighbors)
     cell2 = indices.flatten()
-    # dist = distances.flatten()
-    # KNN_df = pd.DataFrame({'Cell1': cell1, 'Cell2': cell2, 'Distance': dist})
 
-
-
-    # Spatial_Net = KNN_df.copy()
-
-    # id_cell_trans = dict(zip(range(coor.shape[0]), np.array(coor.index), ))
-    # Spatial_Net['Cell1'] = Spatial_Net['Cell1'].map(id_cell_trans)
-    # Spatial_Net['Cell2'] = Spatial_Net['Cell2'].map(id_cell_trans)
-
-    # adata.uns['Spatial_Net'] = Spatial_Net
-
-    # cells = adata.obs.index.to_numpy()
-    # cells_id_tran = {cell: i for i, cell in enumerate(cells)}
-    # if 'Spatial_Net' not in adata.uns.keys():
-    #     raise ValueError("Spatial_Net is not existed! Run Cal_Spatial_Net first!")
-        
-    # Spatial_Net = adata.uns['Spatial_Net']
-    # G_df = Spatial_Net.copy()
-    # G_df['Cell1'] = G_df['Cell1'].map(cells_id_tran)
-    # G_df['Cell2'] = G_df['Cell2'].map(cells_id_tran)
-
-    # edges = np.vstack((G_df['Cell1'].to_numpy(), G_df['Cell2'].to_numpy()))
     edges = np.vstack((cell1, cell2))
     adata.uns['edge_index'] = edges
 
